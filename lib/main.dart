@@ -1,5 +1,6 @@
 import 'package:ewaste/constants.dart';
 import 'package:ewaste/routs.dart';
+import 'package:ewaste/screens/Home/home_screen.dart';
 import 'package:ewaste/screens/splash/splash_screen.dart';
 import 'package:ewaste/theme.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'E-Waste',
       theme: theme(),
-      // home: SplashScreen(),
+      // home: HomeScreen(),
       initialRoute: SplashScreen.routeName,
       routes: routes,
     );

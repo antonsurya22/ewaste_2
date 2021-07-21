@@ -1,5 +1,6 @@
 import 'package:ewaste/components/default_button.dart';
 import 'package:ewaste/constants.dart';
+import 'package:ewaste/screens/Home/home_screen.dart';
 import 'package:ewaste/size_config.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class Body extends StatelessWidget {
           child: DefaultButton(
             text: "Selanjutnya",
             color: kPrimaryColor,
-            press: (){},
+            press: () => Navigator.pushNamed(context, HomeScreen.routeName),
           ),
         ),
         Spacer(),
