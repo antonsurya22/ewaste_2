@@ -93,10 +93,10 @@ class _RegisterFormState extends State<RegisterForm> {
           hintText: "Masukkan Nama",
           floatingLabelBehavior: FloatingLabelBehavior.always,
           suffixIcon: CustomSurffixIcon(
-            svgIcon: "assets/icons/User.svg",
+            svgIcon: "assets/icons/user.svg",
           ),
         ),
-        );
+      );
   }
 
   TextFormField buildConfirmPasswordFormField() {

@@ -34,7 +34,10 @@ class Profile extends StatelessWidget {
               children: [
                 Text(
                   "Andi Suartika",
-                  style: TextStyle(fontSize: getProportionateScreenWidth(14), fontWeight: FontWeight.bold, color: Colors.black),
+                  style: TextStyle(
+                    fontFamily: "Poppins",
+                    fontSize: getProportionateScreenWidth(14),
+                     fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 Container(
                   width: SizeConfig.screenWidth * 0.5,
