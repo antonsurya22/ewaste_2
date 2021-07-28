@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import '../size_config.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({
+   Profile({
+     this.namaProfil,
     Key key,
   }) : super(key: key);
+
+   final String namaProfil;
 
   @override
   Widget build(BuildContext context) {

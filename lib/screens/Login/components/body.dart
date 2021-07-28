@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ewaste/components/custom_surfix_icon.dart';
 import 'package:ewaste/components/default_button.dart';
 import 'package:ewaste/components/form_error.dart';
@@ -7,8 +9,10 @@ import 'package:ewaste/screens/Login_Success/Login_Succes.dart';
 import 'package:ewaste/screens/Register/Register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../size_config.dart';
+
 
 class Body extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -94,7 +98,62 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   String email;
   String password;
+  String nama='';
+
   final List<String> errors = [];
+
+  // Checker Validation
+  // check(){
+  //   final form = _formKey.currentState;
+  //   if(form.validate()){
+  //     form.save();
+  //     Login();
+  //   }
+  // }
+
+  TextEditingController mail = new TextEditingController();
+  TextEditingController pass = new TextEditingController();
+
+  // Login() async{
+  //   final url = Uri.parse("http://192.168.8.119:8080/api/login.php");
+  //   final response = await http.post(url, body: {
+  //     "email" : email,
+  //     "password" : password
+  //   });
+  //   final data = jsonDecode(response.body);
+  //   print(data);
+  // }
+
+  Future <List> _login() async{
+    //final url = Uri.parse("http://192.168.8.119:8080/api/login.php");
+    final url = Uri.parse("https://waste.my.id/api/login.php");
+    final response = await http.post(url, body: {
+      "email" : mail.text,
+      "password" : pass.text,
+      "nama" : nama,
+    });
+    final data = jsonDecode(response.body);
+
+    int value = data['value'];
+
+
+    if(value == 1){
+      setState(() {
+        Navigator.pushReplacementNamed(context, LoginSuccess.routeName);
+        print(nama);
+      });
+    }else{
+      setState(() {
+        FormError();
+      });
+    }
+
+    print(data);
+
+    return data;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -111,10 +170,12 @@ class _LoginFormState extends State<LoginForm> {
             text: "Login",
             color: kPrimaryColor,
             press: (){
+              //check();
               if (_formKey.currentState.validate()){
                 _formKey.currentState.save();
+                _login();
                 // jika validasi berhasil login success
-                Navigator.pushNamed(context, LoginSuccess.routeName);
+               // Navigator.pushNamed(context, LoginSuccess.routeName);
               }
             },
           ),
@@ -127,6 +188,7 @@ class _LoginFormState extends State<LoginForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+          controller: pass,
           obscureText: true,
           onSaved: (newValue) => password = newValue,
           onChanged: (value){
@@ -142,7 +204,7 @@ class _LoginFormState extends State<LoginForm> {
               setState(() {
                 errors.add(kPassNullError);
               });
-              return "";
+              return ""; //
             }
             return null;
           },
@@ -159,6 +221,7 @@ class _LoginFormState extends State<LoginForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+          controller: mail,
           keyboardType: TextInputType.emailAddress,
           onSaved: (newValue) => email = newValue,
           onChanged: (value){

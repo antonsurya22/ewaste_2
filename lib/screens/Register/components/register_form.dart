@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:ewaste/components/custom_surfix_icon.dart';
 import 'package:ewaste/components/default_button.dart';
 import 'package:ewaste/components/form_error.dart';
+import 'package:ewaste/screens/Login/login.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -20,6 +24,40 @@ class _RegisterFormState extends State<RegisterForm> {
   String confirm_password;
   String email;
   final List<String> errors = [];
+
+  TextEditingController nameReg = TextEditingController(); // db -> nama
+  TextEditingController mailReg = TextEditingController(); // db -> email
+  TextEditingController passReg = TextEditingController(); // db -> password
+
+  Future <List> _register() async{
+    //final url = Uri.parse("http://192.168.8.119:8080/api/register.php");
+    final url = Uri.parse("https://waste.my.id/api/register.php");
+    final response = await http.post(url, body: {
+      "email" : mailReg.text,
+      "password" : passReg.text,
+      "nama" : nameReg.text,
+    });
+    var dataReg = jsonDecode(response.body);
+
+    if (dataReg['value'] == 1){
+      setState(() {
+        print(dataReg['message']);
+        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+      });
+    } else if(dataReg['value'] == 2){
+      setState(() {
+        FormError();
+        print(dataReg['message']);
+      });
+    }else{
+      setState(() {
+        FormError();
+        print(dataReg['message']);
+      });
+    }
+    print(dataReg);
+  }
+
 
   void addError({String error}){
     if(!errors.contains(error)){
@@ -58,6 +96,7 @@ class _RegisterFormState extends State<RegisterForm> {
             text: "Registrasi",
             color: kPrimaryColor,
             press: (){
+              _register();
               if(_formKey.currentState.validate()){
                 // registrasi berhasil
               }
@@ -70,6 +109,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   TextFormField buildNameFormField() {
     return TextFormField(
+        controller: nameReg,
         onSaved: (newValue) => nama = newValue,
         onChanged: (value){
           if(value.isNotEmpty && errors.contains(kNamelNullError)){
@@ -101,6 +141,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   TextFormField buildConfirmPasswordFormField() {
     return TextFormField(
+        controller: passReg,
         obscureText: true,
         onSaved: (newValue) => confirm_password = newValue,
         onChanged: (value){
@@ -136,6 +177,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+        controller: passReg,
         obscureText: true,
         onSaved: (newValue) => password = newValue,
         onChanged: (value){
@@ -169,6 +211,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+        controller: mailReg,
         keyboardType: TextInputType.emailAddress,
         onSaved: (newValue) => email = newValue,
         onChanged: (value){

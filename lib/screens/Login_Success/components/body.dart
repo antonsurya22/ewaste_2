@@ -28,7 +28,7 @@ class Body extends StatelessWidget {
           child: DefaultButton(
             text: "Selanjutnya",
             color: kPrimaryColor,
-            press: () => Navigator.pushNamed(context, MainScreen.routeName),
+            press: () => Navigator.pushReplacementNamed(context, MainScreen.routeName),
           ),
         ),
         Spacer(),
